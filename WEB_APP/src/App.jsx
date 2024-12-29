@@ -1,9 +1,9 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
+import Navbar from '/components/Navbar';
+import Help_FAQ from '/pages/help_FAQ';
 
 // Dummy components for each page
-const HelpFAQ = () => <h1>Help/FAQ Page</h1>;
 const Notifications = () => <h1>Notifications Page</h1>;
 const Community = () => <h1>Community Page</h1>;
 const Stats = () => <h1>Stats Page</h1>;
@@ -15,7 +15,7 @@ function App() {
         <Router>
             <Navbar /> {/*navbar is always visible*/}
             <Routes>
-                <Route path="/help_FAQ" element={<HelpFAQ />} />
+                <Route path="/help_FAQ" element={<Help_FAQ />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/community" element={<Community />} />
                 <Route path="/stats" element={<Stats />} />
