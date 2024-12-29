@@ -13,7 +13,7 @@ const Profile = () => <h1>Profile Page</h1>;
 function App() {
     return (
         <Router>
-            <Navbar />
+            <Navbar /> {/*navbar is always visible*/}
             <Routes>
                 <Route path="/help_FAQ" element={<HelpFAQ />} />
                 <Route path="/notifications" element={<Notifications />} />

@@ -11,60 +11,7 @@ body {
     background: linear-gradient(to top right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
     color: #fff;
     display: flex;
-    flex-direction: column;
+    /* flex-direction: column; */
     align-items: center;
     justify-content: flex-start; /* Adjusted to avoid overlapping with nav */
-}
-
-/* Navigation bar styles */
-nav {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 15px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
-}
-
-/* Left and right sections */
-.nav-left, .nav-right {
-    display: flex;
-    margin: 0 5%; /* Adjusted for better alignment */
-}
-
-/* Links in the left section */
-.nav-left a {
-    margin-right: 15px;
-}
-
-/* Links in the right section */
-.nav-right a {
-    margin-left: 15px;
-}
-
-/* Common link styles */
-nav a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    font-size: 1em;
-    border-radius: 20px;
-}
-
-/* Logo image styles */
-.nav-logo {
-    height: 40px;
-    width: auto; /* Ensure aspect ratio is preserved */
-}
-
-/* Link hover effects */
-nav a:hover {
-    background-color: rgba(255, 255, 255, 0.2);
-    transform: scale(1.1);
-    color: #ffcc00;
 }
