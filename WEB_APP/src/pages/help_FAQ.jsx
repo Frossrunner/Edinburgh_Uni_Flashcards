@@ -1,7 +1,7 @@
 import React from 'react';
 import '../styles/intro_box.css';
 
-const Help_FAQ = () => {
+const HelpFAQ = () => {
     return (
 
         <div className="container">
@@ -12,4 +12,4 @@ const Help_FAQ = () => {
     );
 };
 
-export default Help_FAQ;
+export default HelpFAQ;

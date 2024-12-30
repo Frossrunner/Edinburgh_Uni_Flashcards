@@ -1,0 +1,23 @@
+.container{
+    /* layout */
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items:center;
+}
+
+.notification-box{
+    /* layout */
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items:start;
+    padding:20px;
+    width:60%;
+    height:50%;
+    /* styles */
+    background-color: rgba(255,255,255,0.2);
+    border:1px;
+    border-radius:8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
+}

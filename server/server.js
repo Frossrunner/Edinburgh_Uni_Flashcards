@@ -1,6 +1,7 @@
 // Import required modules
 const express = require('express');
 const path = require('path');
+const db = require('./db'); // Import the database connection
 
 // Initialize the Express application
 const app = express();

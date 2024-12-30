@@ -1,12 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import '../styles/navbar.css'; // Import the CSS file
+import profilePic from '../assets/profile_pic.png';
 
 const Navbar = () => {
     return (
         <nav>
             <div className="nav-left">
-                <Link to="../pages/help_FAQ">Help/FAQ</Link>
+                <Link to="/help_faq">Help/FAQ</Link>
                 <Link to="/notifications">Notifications</Link>
                 <Link to="/community">Community</Link>
                 <Link to="/stats">Stats</Link>
@@ -14,7 +15,7 @@ const Navbar = () => {
             </div>
             <div className="nav-right">
                 <Link to="/profile" className="logo">
-                    <img src="assets/Screenshot_empty.png" alt="Logo" className="nav-logo" />
+                    <img src={profilePic} alt="Logo" className="nav-logo" />
                 </Link>
             </div>
         </nav>
