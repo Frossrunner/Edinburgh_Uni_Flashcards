@@ -9,8 +9,9 @@
 .profile-tab{
     /* layout */
     display: flex;
-    justify-content: center;
-    align-items: start;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     width: 60%;
     height: 50%;
     padding: 20px;
