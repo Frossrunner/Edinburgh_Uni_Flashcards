@@ -1,0 +1,35 @@
+.classes-container {
+    /* layout */
+    display: flex;
+    justify-content: start;
+    /* Ensure padding is included in the width */
+    box-sizing: border-box;
+    padding: 10%;
+    width: 100%;
+}
+
+.classes-window {
+    /* layout */
+    display:flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 20%;
+    padding: 20px;
+    margin: 0% 5%  0% 5%;
+    /* decor */
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+}
+
+.classes-edit-info{
+    /* layout */
+    align-items: end;
+    width: 100%;
+    margin: 5px,5px,0px,0px;
+}
+
+button.class-window-button {
+    background-color: rgba(0,0,0,0);
+}

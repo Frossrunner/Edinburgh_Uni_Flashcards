@@ -8,9 +8,7 @@ import CommunityTab from './pages/community.jsx';
 import Profile from './pages/profile.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/sign_up.jsx';
-
-// Dummy components for each page
-const Classes = () => <h1></h1>;
+import Classes from './pages/classes.jsx';
 
 const ProtectedRoute = ({ element }) => {
     const token = localStorage.getItem("authToken");

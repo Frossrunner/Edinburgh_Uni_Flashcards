@@ -8,6 +8,7 @@ const router = express.Router();
 const authenticateToken = require("./middleware/authenticatetoken.js");
 require("dotenv").config();
 const authRoutes = require("./routes/auth.js");
+const classRoutes = require("./routes/classes.js");
 
 
 // Initialize the Express application
@@ -21,13 +22,14 @@ const PORT = process.env.PORT || 3000;
 // Serve static files from the "dist" directory (where Vite builds app)
 app.use(express.static(path.join(__dirname, '../WEB_APP/dist')));
 
+// use Routes
+app.use("/api", authRoutes);
+app.use("/api", classRoutes);
+
 // Catch-all route to serve the React app for any request
 app.get('*',authenticateToken, (req, res) => {
     res.sendFile(path.join(__dirname, '../WEB_APP/dist', 'index.html'));
 });
-
-// use authRoutes
-app.use("/api", authRoutes);
 
 // Start the server
 app.listen(PORT, () => {
