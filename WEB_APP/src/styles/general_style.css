@@ -1,13 +1,31 @@
-/* Reset and base styles */
-html, body {
+html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden; /* Prevent the bounce effect */
+    background: linear-gradient(to top right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
+}
+
+body {
     height: 100%;
     margin: 0;
     padding: 0;
     font-family: Arial, Helvetica, sans-serif;
+    overflow-y: auto; /* Allow vertical scrolling within the body */
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    /* Remove background from body since it's on html */
 }
 
-/* Full-screen gradient background */
-body {
-    background: linear-gradient(to top right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
-    color: #fff;
+/* Optional: If you want to customize the scrollbar */
+body::-webkit-scrollbar {
+    width: 12px;
+}
+
+body::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.1);
+}
+
+body::-webkit-scrollbar-thumb {
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 6px;
 }

@@ -19,7 +19,9 @@ router.post("/login", async (req, res) => {
       if (bcrypt.compareSync(password, user.password_hash)) {
         // Generate a JWT token
         const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: "1h" });
-        res.json({ token });
+        const id = user.id;
+        const email = user.email;
+        res.json({ token, id, email });
       } else {
         res.status(401).json({ error: "Invalid email or password" });
       }
@@ -32,7 +34,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// posts sign up data to system
+// posts sign up data
 router.post("/signup", async (req, res) => {
   const { email, password } = req.body;
 
@@ -53,7 +55,7 @@ router.post("/signup", async (req, res) => {
 
     // Insert the new user into the database
     const [result] = await db.execute(
-      "INSERT INTO users (id, username, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
+      "INSERT INTO users (username, email, password_hash, created_at) VALUES (?, ?, ?, ?)",
       ['finlay', email, hashedPassword, createdAt]
     );
 

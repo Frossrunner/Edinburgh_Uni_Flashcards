@@ -1,0 +1,291 @@
+.deck-edit-container {
+  position: fixed;
+  top: 70px; /* Adjust based on your navbar height */
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:rgba(255, 255, 255, 0);
+  overflow: hidden;
+}
+
+.deck-edit-inner {
+  max-width: 800px;
+  height: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  background: rgba(255,255,255,0.5);
+  box-shadow: 0 0 20px rgba(0,0,0,0.1);
+}
+
+.deck-edit-static-content {
+  flex-shrink: 0;
+  border-bottom: 1px solid #e0e0e0;
+  background: rgba(255,255,255,0.5);
+}
+
+.deck-edit-header {
+  padding: 15px 20px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.deck-edit-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between; /* Ensures items go to the left and right */
+  align-items: center; /* Keeps them vertically aligned */
+  width: 100%; /* Ensures it takes full width */
+}
+
+.deck-edit-header h2 {
+  margin: 0 0 15px 0;
+  font-size: 1.5em;
+  color: #2c3e50;
+}
+
+.deck-edit-deck-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.deck-edit-deck-name-input {
+  font-size: 1.1em;
+  padding: 8px 12px;
+  border: 2px solid #e0e0e0;
+  border-radius: 6px;
+  width: 250px;
+  transition: border-color 0.3s;
+}
+
+.deck-edit-toolbar {
+  padding: 10px 20px;
+  display: flex;
+  gap: 8px;
+  background: rgba(255,255,255,0.5);
+}
+
+.deck-edit-tool-btn {
+  padding: 6px 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  background: rgba(255,255,255,0.5);
+  cursor: pointer;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.deck-edit-scrollable-content {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  background: rgba(255,255,255,0.5);
+}
+
+.deck-edit-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 15px;
+  padding-bottom: 20px;
+}
+
+.deck-edit-card {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+}
+
+.deck-edit-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.deck-edit-card-number {
+  font-size: 0.9em;
+  font-weight: 600;
+  color: #666;
+}
+
+.deck-edit-card-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.deck-edit-card-btn {
+  padding: 4px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #666;
+  font-size: 0.9em;
+}
+
+.deck-edit-card-input {
+  width: 95%;
+  min-height: 60px;
+  padding: 8px;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  font-size: 0.9em;
+  resize: vertical;
+}
+
+.deck-edit-card-divider {
+  margin: 10px 0;
+  text-align: center;
+  position: relative;
+}
+
+.deck-edit-card-divider::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 1px;
+  background: #e0e0e0;
+}
+
+.deck-edit-card-divider span {
+  background: rgba(255,255,255,0.5);
+  padding: 0 8px;
+  color: #666;
+  font-size: 0.9em;
+  position: relative;
+}
+
+.deck-edit-footer {
+  flex-shrink: 0;
+  padding: 15px 20px;
+  background: rgba(255,255,255,0.5);
+  border-top: 1px solid #e0e0e0;
+}
+
+.deck-edit-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.deck-edit-add-btn,
+.deck-edit-save-btn {
+  padding: 8px 16px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 1em;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.deck-edit-add-btn {
+  background: #3498db;
+  color: rgb(255, 255, 255);
+}
+
+.deck-edit-save-btn {
+  background: #2ecc71;
+  color: rgba(255,255,255);
+}
+
+.deck-edit-card-btn {
+  padding: 6px;
+  border: 1px solid #e0e0e0;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  color: #000000;
+  font-size: 0.9em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  transition: all 0.2s ease;
+}
+
+/* Up button specific styles */
+.deck-edit-card-btn .fa-arrow-up {
+  color: #3498db;
+}
+
+.deck-edit-card-btn:hover .fa-arrow-up {
+  color: white;
+}
+
+.deck-edit-card-btn:has(.fa-arrow-up):hover {
+  background: #3498db;
+  border-color: #3498db;
+  transform: translateY(-2px);
+}
+
+/* Down button specific styles */
+.deck-edit-card-btn .fa-arrow-down {
+  color: #9b59b6;
+}
+
+.deck-edit-card-btn:hover .fa-arrow-down {
+  color: white;
+}
+
+.deck-edit-card-btn:has(.fa-arrow-down):hover {
+  background: #9b59b6;
+  border-color: #9b59b6;
+  transform: translateY(2px);
+}
+
+/* Delete button specific styles */
+.deck-edit-delete-btn .fa-trash {
+  color: #e74c3c;
+}
+
+.deck-edit-delete-btn:hover .fa-trash {
+  color: white;
+}
+
+.deck-edit-delete-btn:hover {
+  background: #e74c3c;
+  border-color: #e74c3c;
+  transform: scale(1.1);
+}
+
+/* Active state for all buttons */
+.deck-edit-card-btn:active {
+  transform: scale(0.95);
+}
+
+/* Disabled state if needed */
+.deck-edit-card-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  background: #f5f5f5;
+}
+
+.deck-edit-card-btn:hover {
+  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+
+@media (max-width: 768px) {
+  .deck-edit-cards {
+    grid-template-columns: 1fr;
+  }
+  
+  .deck-edit-inner {
+    height: 100%;
+  }
+  
+  .deck-edit-deck-name-input {
+    width: 100%;
+  }
+}

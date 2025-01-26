@@ -9,7 +9,8 @@ const authenticateToken = require("./middleware/authenticatetoken.js");
 require("dotenv").config();
 const authRoutes = require("./routes/auth.js");
 const classRoutes = require("./routes/classes.js");
-
+const deckRoutes = require("./routes/decks.js");
+const studyRoutes = require("./routes/study.js");
 
 // Initialize the Express application
 const app = express();
@@ -25,6 +26,8 @@ app.use(express.static(path.join(__dirname, '../WEB_APP/dist')));
 // use Routes
 app.use("/api", authRoutes);
 app.use("/api", classRoutes);
+app.use("/api", deckRoutes);
+app.use("/api", studyRoutes);
 
 // Catch-all route to serve the React app for any request
 app.get('*',authenticateToken, (req, res) => {

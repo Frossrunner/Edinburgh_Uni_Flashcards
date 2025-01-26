@@ -9,6 +9,9 @@ import Profile from './pages/profile.jsx';
 import Login from './pages/Login.jsx';
 import SignUp from './pages/sign_up.jsx';
 import Classes from './pages/classes.jsx';
+import Class from './pages/class.jsx';
+import DeckEditPage from './pages/deck_display.jsx';
+import StudyDeck from './pages/study.jsx';
 
 const ProtectedRoute = ({ element }) => {
     const token = localStorage.getItem("authToken");
@@ -20,14 +23,17 @@ function App() {
         <Router>
             <Navbar /> {/*navbar is always visible*/}
             <Routes>
-                <Route path="/" element={<Login />} />
-                <Route path="/sign_up" element={<SignUp />}/>
-                <Route path="/help_faq" element={<ProtectedRoute element={<HelpFAQ />} />} />
+                <Route path="/"              element={<Login />} />
+                <Route path="/sign_up"       element={<SignUp />}/>
+                <Route path="/help_faq"      element={<ProtectedRoute element={<HelpFAQ />} />} />
                 <Route path="/notifications" element={<ProtectedRoute element={<NotificationsTab />} />} />
                 <Route path="/community" element={<ProtectedRoute element={<CommunityTab />} />} />
-                <Route path="/stats" element={<ProtectedRoute element={<StatsTab />} />} />
-                <Route path="/classes" element={<ProtectedRoute element={<Classes />} />} />
-                <Route path="/profile" element={<ProtectedRoute element={<Profile />} />} />
+                <Route path="/stats"     element={<ProtectedRoute element={<StatsTab />} />} />
+                <Route path="/classes"   element={<ProtectedRoute element={<Classes />} />} />
+                <Route path="/class"     element={<ProtectedRoute element={<Class />} />} />
+                <Route path="/decks/:deckId/edit" element={<DeckEditPage />} />
+                <Route path="/study/:deckId" element={<StudyDeck />} />
+                <Route path="/profile"   element={<ProtectedRoute element={<Profile />} />} />
             </Routes>
 
         </Router>

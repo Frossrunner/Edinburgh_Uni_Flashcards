@@ -1,12 +1,14 @@
-import react, { useState } from 'react';
+import react, { useState, createContext, useContext } from 'react';
 import '../styles/login.css';
 import { useNavigate } from 'react-router-dom';
+import { useUser } from '../components/user_context.jsx';
 
 const Login = () =>{
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const navigate = useNavigate(); // React Router hook
     const [requireValidation, setRequireValidation] = useState(false);
+    const { setUser } = useUser();
 
     const HandleSubmit = async (e) => {
         e.preventDefault();
@@ -18,6 +20,7 @@ const Login = () =>{
         const data = await response.json();
         if (data.token){
             localStorage.setItem("authToken", data.token);
+            setUser({ id: data.id, email: data.email });
             navigate('/profile');
         } else {
             alert('username or password incorrect');

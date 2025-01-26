@@ -1,56 +1,132 @@
-nav {
-    background-color: rgba(0, 0, 0, 0.8);
-    padding: 15px 20px;
+/* navbar.css */
+.navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.navbar-content {
+    max-width: 1400px;
+    margin: 0 auto;
+    height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
-    position: fixed;
-    top: 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    z-index: 1000;
+    padding: 0 2rem;
 }
 
-.nav-left,
-.nav-right {
-    display: flex;
-    margin-left: 5%;
-    margin-right: 5%;
-}
-
-.nav-left a {
-    margin-right: 15px;
-    width: 100%;
-}
-
-.nav-right a {
-    margin-left: 15px;
-}
-
-nav a {
-    color: #fff;
-    text-decoration: none;
-    padding: 10px 15px;
-    transition: background-color 0.3s ease, color 0.3s ease, transform 0.3s ease;
-    font-size: 1em;
-    border-radius: 20px;
-}
-
-nav a.logo {
-    padding: 0;
+.nav-left, .nav-right {
     display: flex;
     align-items: center;
+    gap: 1rem;
 }
 
-nav a:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-    transform: scale(1.1);
+.nav-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.9rem;
+    position: relative;
 }
 
-.nav-logo {
-    max-width: 100px;
-    max-height: 40px;
-    width: 100%; 
-    height: auto;
+.nav-item:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: rgba(255, 255, 255, 1);
+    transform: translateY(-1px);
+}
+
+.nav-item.active {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+}
+
+.notification-icon {
+    position: relative;
+}
+
+.notification-badge {
+    position: absolute;
+    top: -5px;
+    right: -5px;
+    background: #ff4757;
+    color: white;
     border-radius: 50%;
+    width: 18px;
+    height: 18px;
+    font-size: 0.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid rgba(17, 0, 130, 0.9);
+}
+
+CSS
+
+Collapse
+.profile-link {
+    text-decoration: none;
+    padding: 0;
+    margin-left: 1rem;
+}
+
+.profile-image-container {
+    width: 40px;  /* Fixed width */
+    height: 40px; /* Fixed height */
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.profile-image-container:hover {
+    border-color: rgba(255, 255, 255, 0.4);
+    transform: scale(1.05);
+}
+
+.profile-image {
+    width: 40px;  /* Fixed width */
+    height: 40px; /* Fixed height */
+    object-fit: cover; /* This will ensure the image covers the container properly */
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nav-item span {
+        display: none;
+    }
+    
+    .nav-item {
+        padding: 0.5rem;
+    }
+    
+    .navbar-content {
+        padding: 0 1rem;
+    }
+}
+
+/* Optional: Add a subtle gradient overlay */
+.navbar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        to right,
+        rgba(17, 0, 130, 0.1),
+        rgba(133, 0, 0, 0.1)
+    );
+    pointer-events: none;
 }

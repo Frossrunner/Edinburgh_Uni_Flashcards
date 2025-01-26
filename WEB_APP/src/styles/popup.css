@@ -1,71 +1,184 @@
-/* Overlay to cover the entire screen */
+/* popup.css */
 .popup-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Ensure it appears on top of other elements */
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.3s ease;
 }
 
-/* Popup content */
 .popup-content {
-    background: rgba(255,255,255,0.8);
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-    max-width: 90%; /* Ensure responsiveness */
-    position: relative;
+    background: rgba(30, 30, 30, 0.95);
+    backdrop-filter: blur(10px);
+    border-radius: 12px;
+    padding: 0;
+    width: 90%;
+    max-width: 500px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    animation: slideUp 0.3s ease;
 }
 
-/* Close button */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.popup-title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.popup-title h2 {
+    margin: 0;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 1.5rem;
+    font-weight: 500;
+}
+
+.popup-icon {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.5rem;
+}
+
 .popup-close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
     background: none;
     border: none;
+    color: rgba(255, 255, 255, 0.6);
     font-size: 1.5rem;
     cursor: pointer;
-    color: #333;
+    padding: 4px;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
 }
 
-/* Form styles */
+.popup-close-button:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+form {
+    padding: 24px;
+}
+
 .popup-form-group {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
 }
 
 .popup-form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 8px;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
 }
 
 .popup-form-group input,
 .popup-form-group textarea {
-    box-sizing: border-box;
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
+    width: 95%;
+    padding: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
     margin: 0px;
 }
 
+.popup-form-group input:focus,
+.popup-form-group textarea:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(255, 255, 255, 0.1);
+}
+
+.popup-form-group input::placeholder,
+.popup-form-group textarea::placeholder {
+    color: rgba(255, 255, 255, 0.3);
+}
+
+.popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.popup-cancel-button,
 .popup-submit-button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
     cursor: pointer;
-    font-size: 1rem;
+}
+
+.popup-cancel-button {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.popup-submit-button {
+    background: rgb(13, 55, 194);
+    border: none;
+    color: white;
+}
+
+.popup-cancel-button:hover {
+    background: rgba(255, 255, 255, 0.15);
 }
 
 .popup-submit-button:hover {
-    background-color: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .popup-content {
+        width: 95%;
+        margin: 20px;
+    }
+    
+    .popup-actions {
+        flex-direction: column-reverse;
+    }
+    
+    .popup-cancel-button,
+    .popup-submit-button {
+        width: 100%;
+    }
 }

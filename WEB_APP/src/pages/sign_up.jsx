@@ -35,6 +35,7 @@ const SignUp = () =>{
             body: JSON.stringify({email, password}),
         });
         const data = await response.json();
+        navigate('/');
     };
 
     const ToLogin = (e) => {
