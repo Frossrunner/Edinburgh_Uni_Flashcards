@@ -3,8 +3,10 @@ html {
     margin: 0;
     padding: 0;
     overflow: hidden; /* Prevent the bounce effect */
-    background: linear-gradient(to top right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
+    background: linear-gradient(to top right, rgba(65, 0, 130, 0.9), rgba(133, 0, 84, 0.9));
 }
+/* rgba (17, 0, 130, 0.9) to rgba(133, 0, 0, 0.9) */
+
 
 body {
     height: 100%;

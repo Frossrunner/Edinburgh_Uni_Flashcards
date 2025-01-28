@@ -44,8 +44,12 @@
     transform: rotateY(180deg);
 }
 
-.study-card-front,
-.study-card-back {
+.study-card-question,
+.study-card-answer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
     position: absolute;
     width: 100%;
     height: 100%;
@@ -54,19 +58,23 @@
     backdrop-filter: blur(10px);
     border-radius: 12px;
     padding: 20px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
     cursor: pointer;
     border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.study-card-back {
+.study-card-answer {
     transform: rotateY(180deg);
 }
 
-.study-card-content {
+.study-card-content-question {
+    margin-top: 30%;
+    font-size: 1.5rem;
+    color: white;
+    margin-bottom: 20px;
+}
+
+.study-card-content-answer {
+    margin-top: 30%;
     font-size: 1.5rem;
     color: white;
     margin-bottom: 20px;
@@ -79,6 +87,11 @@
 }
 
 .difficulty-btn {
+    display: flex;
+    flex-direction: column;  /* Stack icon and text */
+    align-items: center;
+    justify-content: center;
+    gap: 5px;  /* Space between icon and text */
     padding: 10px 20px;
     border: none;
     border-radius: 8px;
@@ -87,19 +100,24 @@
     font-weight: 500;
 }
 
-.difficulty-btn.hard {
-    background: rgba(255, 99, 99, 0.2);
-    color: #ff6363;
+.difficulty-btn.again {
+    background: #ce63ff70;
+    color: #ffffff;
 }
 
-.difficulty-btn.medium {
-    background: rgba(255, 255, 255, 0.2);
-    color: white;
+.difficulty-btn.hard {
+    background: #ff6363a8;
+    color: #fbfafa;
+}
+
+.difficulty-btn.good {
+    background: #1cbd12d1;
+    color: #fcfcfc;
 }
 
 .difficulty-btn.easy {
-    background: rgba(99, 255, 99, 0.2);
-    color: #63ff63;
+    background: #ffe583e0;
+    color: #505050;
 }
 
 .study-progress {

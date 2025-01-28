@@ -63,7 +63,7 @@ router.post("/study/:cardId/response", authenticateToken, async (req, res) => {
     try {
         const userId = req.user.id;
         const cardId = req.params.cardId;
-        const { difficulty } = req.body; // difficulty should be 1-5
+        const { difficulty } = req.body;
 
         // Validate difficulty input
         if (!difficulty || difficulty < 1 || difficulty > 5) {
