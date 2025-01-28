@@ -26,7 +26,7 @@ const Class = () => {
             console.log(name);
             console.log(description);
             const token = localStorage.getItem("authToken"); // Retrieve the token
-            const response = await fetch('/Api/createDeck', {
+            const response = await fetch('/api/createDeck', {
                 method: 'POST',
                 headers: {
                     "Content-Type": "application/json",

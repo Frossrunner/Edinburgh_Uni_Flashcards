@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useLocation, useNavigate } from 'react-router-dom'; // Import useParams
 // Import API functions
 import { getDeck, updateDeck } from '../api/deckApi.js';
+import AICardGenerator from '../components/ai_generator.jsx';
 // import styles
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
@@ -14,7 +15,8 @@ import {
   faArrowLeft, 
   faTrash, 
   faPlus, 
-  faSave 
+  faSave,
+  faMagicWandSparkles
 } from '@fortawesome/free-solid-svg-icons';
 import '../styles/deck_display.css';
 
@@ -22,6 +24,7 @@ const DeckEditPage = () => {
   const { deckId } = useParams(); // Use useParams to get deckId
   const [deckName, setDeckName] = useState('');
   const [cards, setCards] = useState([]);
+  const [showAIGenerator, setShowAIGenerator] = useState(false);
   const location = useLocation();
   const classData = location.state;
   const navigate = useNavigate();
@@ -48,6 +51,16 @@ const DeckEditPage = () => {
       answer: '',
     };
     setCards([...cards, newCard]);
+  };
+
+  const handleCardsGenerated = (newCards) => {
+    const formattedCards = newCards.map(card => ({
+      id: Date.now() + Math.random(), // Generate unique ID
+      question: card.question,
+      answer: card.answer
+    }));
+
+    setCards([...cards, ...formattedCards]);
   };
 
   const handleDeleteCard = (id) => {
@@ -115,6 +128,9 @@ const DeckEditPage = () => {
             <button className="deck-edit-tool-btn">
               <FontAwesomeIcon icon={faSort} /> Sort
             </button>
+            <button className="deck-edit-tool-btn" onClick={() => setShowAIGenerator(true)}>
+              <FontAwesomeIcon icon={faMagicWandSparkles} /> AI Generate
+            </button>
           </div>
         </div>
 
@@ -178,6 +194,13 @@ const DeckEditPage = () => {
           </div>
         </div>
       </div>
+
+      <AICardGenerator
+        isVisible={showAIGenerator}
+        onClose={() => setShowAIGenerator(false)}
+        onCardsGenerated={handleCardsGenerated}
+      />
+      
     </div>
   );
 };

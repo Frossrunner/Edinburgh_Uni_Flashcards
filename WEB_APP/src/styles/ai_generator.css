@@ -1,0 +1,293 @@
+/* styles/ai_generator.css */
+
+.ai-generator-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(5px);
+}
+
+.ai-generator-modal {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    width: 90%;
+    max-width: 900px;
+    max-height: 90vh;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: column;
+    animation: modalFadeIn 0.3s ease;
+}
+
+.ai-generator-header {
+    padding: 20px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ai-generator-header h2 {
+    color: white;
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.ai-close-btn {
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.ai-close-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+/* Upload Section Styles */
+.ai-generator-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+}
+
+.ai-upload-section {
+    display: flex;
+    justify-content: center;
+    padding: 40px 20px;
+}
+
+.ai-upload-label {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px 40px;
+    border-radius: 12px;
+    border: 2px dashed rgba(255, 255, 255, 0.2);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    transition: all 0.2s ease;
+}
+
+.ai-upload-label:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.ai-upload-label svg {
+    font-size: 2rem;
+    margin-bottom: 10px;
+}
+
+/* Configuration Section Styles */
+.ai-config-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.ai-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ai-input-group label {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 0.9rem;
+}
+
+.ai-input-group input {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 10px 15px;
+    border-radius: 8px;
+    color: white;
+    font-size: 1rem;
+}
+
+.ai-input-group input:focus {
+    outline: none;
+    border-color: rgba(255, 255, 255, 0.4);
+}
+
+.ai-generate-btn {
+    background: linear-gradient(to right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
+    color: white;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+}
+
+.ai-generate-btn:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.ai-generate-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Review Section Styles */
+.ai-review-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.ai-cards-grid {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.ai-review-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 15px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ai-review-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.ai-review-card.selected {
+    border-color: #4CAF50;
+    background: rgba(76, 175, 80, 0.1);
+}
+
+.ai-review-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.ai-review-card-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.ai-review-question {
+    color: white;
+    font-weight: 500;
+}
+
+.ai-review-answer {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+.ai-review-actions {
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.ai-back-btn,
+.ai-add-btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.ai-back-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+}
+
+.ai-add-btn {
+    background: #4CAF50;
+    color: white;
+}
+
+.ai-back-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.ai-add-btn:hover:not(:disabled) {
+    background: #45a049;
+}
+
+.ai-add-btn:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .ai-generator-modal {
+        width: 95%;
+        max-height: 95vh;
+    }
+
+    .ai-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-review-actions {
+        flex-direction: column;
+    }
+
+    .ai-back-btn,
+    .ai-add-btn {
+        width: 100%;
+    }
+}

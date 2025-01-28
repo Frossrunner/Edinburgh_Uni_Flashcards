@@ -176,6 +176,18 @@
   gap: 10px;
 }
 
+.deck-edit-tool-btn:has(.fa-magic-wand-sparkles) {
+  background: linear-gradient(to right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
+  color: white;
+  border: none;
+}
+
+.deck-edit-tool-btn:has(.fa-magic-wand-sparkles):hover {
+  background: linear-gradient(to right, rgba(17, 0, 130, 1), rgba(133, 0, 0, 1));
+  transform: translateY(-1px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
 .deck-edit-add-btn,
 .deck-edit-save-btn {
   padding: 8px 16px;

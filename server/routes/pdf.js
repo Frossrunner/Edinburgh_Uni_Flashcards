@@ -2,7 +2,7 @@
 const express = require('express');
 const router = express.Router();
 const { upload, extractTextFromPDF } = require('../middleware/file_utils');
-const { generateCardsFromText, fallbackGeneration } = require('../middleware/ai_utils');
+const { generateCardsFromText, fallbackGeneration } = require('../middleware/ai_utils2');
 const fs = require('fs').promises;
 const path = require('path');
 
