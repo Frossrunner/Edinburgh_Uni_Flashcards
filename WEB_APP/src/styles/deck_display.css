@@ -198,16 +198,22 @@
   display: flex;
   align-items: center;
   gap: 6px;
+  transition: all 0.3s ease;
 }
 
 .deck-edit-add-btn {
-  background: #3498db;
+  background: linear-gradient(135deg, rgba(214, 47, 97, 0.9), rgba(255, 69, 184, 0.812)); 
   color: rgb(255, 255, 255);
 }
 
 .deck-edit-save-btn {
-  background: #2ecc71;
-  color: rgba(255,255,255);
+    background: linear-gradient(135deg, rgba(214, 47, 136, 0.9), rgba(147, 69, 255, 0.812)); 
+    color: white;
+}
+
+.deck-edit-add-btn:hover,
+.deck-edit-save-btn:hover {
+  transform: translateY(-2px);
 }
 
 .deck-edit-card-btn {

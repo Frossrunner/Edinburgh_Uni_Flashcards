@@ -1,68 +1,96 @@
-import react, { useState, createContext, useContext } from 'react';
-import '../styles/login.css';
+import React, { useState } from 'react';
+import '../styles/auth.css';
 import { useNavigate } from 'react-router-dom';
 import { useUser } from '../components/user_context.jsx';
 
-const Login = () =>{
+const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const navigate = useNavigate(); // React Router hook
-    const [requireValidation, setRequireValidation] = useState(false);
+    const [error, setError] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const navigate = useNavigate();
     const { setUser } = useUser();
 
-    const HandleSubmit = async (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        const response = await fetch("/api/login",{
-            method: 'POST',
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({email, password}),
-        });
-        const data = await response.json();
-        if (data.token){
-            localStorage.setItem("authToken", data.token);
-            setUser({ id: data.id, email: data.email });
-            navigate('/profile');
-        } else {
-            alert('username or password incorrect');
+        setError("");
+        setIsLoading(true);
+
+        try {
+            const response = await fetch("/api/login", {
+                method: 'POST',
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    email: email.trim().toLowerCase(),
+                    password
+                }),
+                credentials: 'include' // Important for security
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.message || 'Login failed');
+            }
+
+            if (data.token) {
+                // Store token securely
+                localStorage.setItem("authToken", data.token);
+                setUser({ id: data.id, email: data.email });
+                navigate('/profile');
+            }
+        } catch (err) {
+            setError(err.message || 'An error occurred during login');
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleSignUpClick = (e) => {
-        e.preventDefault(); // Prevent default form submission
-        navigate('/sign_up'); // Redirect to the signup page
-    };
-    
-    return(
-        <div className='container'>
-            <form onSubmit={HandleSubmit} className='login-form'>
-                <h1>Login</h1>
-                <div className='field'>
-                    <label>
-                        Email:
-                        <input
-                            type='email'
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required={requireValidation} // Add required only if validation is enabled
-                        />
-                    </label>
+    return (
+        <div className="auth-container">
+            <form onSubmit={handleSubmit} className="auth-form">
+                <h1>Welcome Back</h1>
+                
+                {error && <div className="auth-error">{error}</div>}
+                
+                <div className="auth-field">
+                    <label htmlFor="email">Email</label>
+                    <input
+                        id="email"
+                        type="email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                        autoComplete="email"
+                    />
                 </div>
-                <div className='field'>
-                    <label>
-                        Password:
-                        <input
-                            type='password'
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required={requireValidation} />
-                    </label>
+
+                <div className="auth-field">
+                    <label htmlFor="password">Password</label>
+                    <input
+                        id="password"
+                        type="password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                        autoComplete="current-password"
+                    />
                 </div>
-                <div className='field'>
-                    <button type="submit">
-                        Login
+
+                <div className="auth-actions">
+                    <button 
+                        type="submit" 
+                        className="auth-primary-btn"
+                        disabled={isLoading}
+                    >
+                        {isLoading ? 'Logging in...' : 'Login'}
                     </button>
-                    <label>or</label>
-                    <button onClick={handleSignUpClick}>
+                    <span className="auth-divider">or</span>
+                    <button 
+                        type="button"
+                        className="auth-secondary-btn"
+                        onClick={() => navigate('/sign_up')}
+                    >
                         Sign up
                     </button>
                 </div>

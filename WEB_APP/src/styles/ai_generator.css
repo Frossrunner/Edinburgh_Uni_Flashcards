@@ -133,7 +133,7 @@
 }
 
 .ai-generate-btn {
-    background: linear-gradient(to right, rgba(17, 0, 130, 0.9), rgba(133, 0, 0, 0.9));
+    background: linear-gradient(135deg, rgba(214, 47, 136, 0.9), rgba(147, 69, 255, 0.812)); 
     color: white;
     padding: 12px 24px;
     border: none;
