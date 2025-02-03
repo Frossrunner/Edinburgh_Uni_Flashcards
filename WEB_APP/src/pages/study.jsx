@@ -25,15 +25,114 @@ const StudyDeck = () => {
     const [sessionComplete, setSessionComplete] = useState(false);
     const location = useLocation();
     const classData = location.state;
+    const [sessionStartTime, setSessionStartTime] = useState(null);
+    const [sessionId, setSessionId] = useState(null);
 
     useEffect(() => {
         const initializeStudy = async () => {
             await fetchCards();
             await fetchNextReview();
+            await startStudySession();
         };
 
         initializeStudy();
+        return () => {
+            if (sessionId) {
+                endStudySession(false);
+            }
+        };
     }, [deckId]);
+
+    const startStudySession = async () => {
+        try {
+            const token = localStorage.getItem('authToken');
+            const response = await fetch('/api/study/session/start', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    class_id: classData.id,
+                    deck_id: deckId
+                }),
+            });
+            const data = await response.json();
+            setSessionId(data.session_id);
+            setSessionStartTime(new Date());
+        } catch (error) {
+            console.error('Error starting study session:', error);
+        }
+    };
+
+    const endStudySession = async (completed = true) => {
+        if (!sessionId) return;
+
+        try {
+            const token = localStorage.getItem('authToken');
+            const endTime = new Date();
+            const durationMinutes = Math.round(
+                (endTime - sessionStartTime) / (1000 * 60)
+            );
+
+            await fetch('/api/study/session/end', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({
+                    session_id: sessionId,
+                    duration_minutes: durationMinutes,
+                    cards_studied: studyStats.correct + studyStats.incorrect,
+                    correct_cards: studyStats.correct,
+                    completed: completed
+                }),
+            });
+        } catch (error) {
+            console.error('Error ending study session:', error);
+        }
+    };
+
+    const handlePause = async () => {
+        await endStudySession(false);
+        navigate(`/class`, { state: classData });
+    };
+
+    const handleResponse = async (cardId, difficulty) => {
+        try {
+            const token = localStorage.getItem('authToken');
+            await fetch(`/api/study/${cardId}/response`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`,
+                },
+                body: JSON.stringify({ 
+                    difficulty,
+                    session_id: sessionId 
+                }),
+            });
+
+            // Update stats
+            const isCorrect = difficulty >= 4;
+            setStudyStats((prev) => ({
+                correct: isCorrect ? prev.correct + 1 : prev.correct,
+                incorrect: !isCorrect ? prev.incorrect + 1 : prev.incorrect,
+                remaining: prev.remaining - 1,
+            }));
+
+            // Move to next card or end session
+            if (currentCardIndex + 1 < cards.length) {
+                setCurrentCardIndex((prev) => prev + 1);
+            } else {
+                await endStudySession(true); // true indicates normal completion
+                setSessionComplete(true);
+            }
+        } catch (error) {
+            console.error('Error updating card:', error);
+        }
+    };
 
     const fetchCards = async () => {
         try {
@@ -49,36 +148,6 @@ const StudyDeck = () => {
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching cards:', error);
-        }
-    };
-
-    const handleResponse = async (cardId, difficulty) => {
-        try {
-            const token = localStorage.getItem('authToken');
-            await fetch(`/api/study/${cardId}/response`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ difficulty }),
-            });
-
-            // Update stats
-            setStudyStats((prev) => ({
-                correct: difficulty >= 4 ? prev.correct + 1 : prev.correct,
-                incorrect: difficulty < 4 ? prev.incorrect + 1 : prev.incorrect,
-                remaining: prev.remaining - 1,
-            }));
-
-            // Move to next card or end session
-            if (currentCardIndex + 1 < cards.length) {
-                setCurrentCardIndex((prev) => prev + 1);
-            } else {
-                setSessionComplete(true);
-            }
-        } catch (error) {
-            console.error('Error updating card:', error);
         }
     };
 
@@ -125,7 +194,7 @@ const StudyDeck = () => {
                     <FontAwesomeIcon icon={faArrowLeft} /> Back to Deck
                 </button>
                 <StudyProgress stats={studyStats} totalCards={cards.length} />
-                <button className="study-pause-button">
+                <button className="study-pause-button" onClick={handlePause}>
                     <FontAwesomeIcon icon={faPause} /> Pause
                 </button>
             </div>

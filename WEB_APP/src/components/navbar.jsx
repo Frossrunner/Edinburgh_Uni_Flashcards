@@ -39,7 +39,7 @@ const Navbar = () => {
                 </div>
 
                 <div className="nav-right">
-                    <Link to="/notifications" className={`nav-item notification-icon ${isActive('/notifications') ? 'active' : ''}`}>
+                    <Link to="/notifications" className={`nav-item notifications-icon ${isActive('/notifications') ? 'active' : ''}`}>
                         <FontAwesomeIcon icon={faBell} />
                         {notificationCount > 0 && <span className="notification-badge">{notificationCount}</span>}
                     </Link>

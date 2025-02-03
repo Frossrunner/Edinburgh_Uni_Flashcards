@@ -6,7 +6,7 @@ export const getDeck = async (deckId) => {
         headers: {
           'Content-Type': 'application/json',
           "Authorization": `Bearer ${token}`
-        },
+        }
       });
   
       if (!response.ok) {

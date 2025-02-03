@@ -12,6 +12,7 @@ const classRoutes = require("./routes/classes.js");
 const deckRoutes = require("./routes/decks.js");
 const studyRoutes = require("./routes/study.js");
 const pdfRoutes = require("./routes/pdf.js");
+const statsRoutes = require("./routes/stats.js");
 
 // Initialize the Express application
 const app = express();
@@ -30,6 +31,7 @@ app.use("/api", classRoutes);
 app.use("/api", deckRoutes);
 app.use("/api", studyRoutes);
 app.use("/api", pdfRoutes);
+app.use("/api", statsRoutes);
 
 // Catch-all route to serve the React app for any request
 app.get('*',authenticateToken, (req, res) => {

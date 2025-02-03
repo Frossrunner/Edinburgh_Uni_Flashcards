@@ -3,6 +3,7 @@ import {
     LineChart, Line, BarChart, Bar, XAxis, YAxis, 
     CartesianGrid, Tooltip, ResponsiveContainer, PieChart, Pie, Cell 
 } from 'recharts';
+import {getClasses, getStudySessions, getStudyStats, getDailyStudyData} from '../api/statsApi.js';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { 
     faCalendarAlt, 
@@ -15,32 +16,120 @@ import {
 import '../styles/stats.css';
 
 const StatsTab = () => {
-    // Example data - replace with real data from your API
     const [timeRange, setTimeRange] = useState('week');
+    const [classData, setClassDataState] = useState([]); // renamed from setClassData
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null);
     const [stats, setStats] = useState({
-        totalStudied: 1250,
-        correctAnswers: 875,
-        studyStreak: 7,
-        averageTime: 25,
-        accuracy: 78
+        totalStudied: 0,
+        correctAnswers: 0,
+        studyStreak: 0,
+        averageTime: 0,
+        accuracy: 0
     });
+    const [studyData, setStudyData] = useState([]);
 
-    const studyData = [
-        { date: 'Mon', cards: 45, time: 20 },
-        { date: 'Tue', cards: 52, time: 25 },
-        { date: 'Wed', cards: 38, time: 18 },
-        { date: 'Thu', cards: 65, time: 30 },
-        { date: 'Fri', cards: 48, time: 22 },
-        { date: 'Sat', cards: 55, time: 28 },
-        { date: 'Sun', cards: 42, time: 20 }
-    ];
+    const fetchAllData = async () => {
+        try {
+            setIsLoading(true);
+            setError(null);
 
-    const subjectData = [
-        { name: 'Math', value: 30 },
-        { name: 'Science', value: 25 },
-        { name: 'History', value: 20 },
-        { name: 'Language', value: 25 }
-    ];
+            // Fetch stats and study data in parallel
+            const [statsData, dailyData, classesData] = await Promise.all([
+                getStudyStats(),
+                getDailyStudyData(timeRange),
+                processClassData()
+            ]);
+
+            // Update states with fetched data
+            setStats(statsData);
+            setStudyData(dailyData);
+            setClassDataState(classesData);
+
+        } catch (err) {
+            setError(err.message);
+            console.error('Error fetching data:', err);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // Fetch data when component mounts or timeRange changes
+    useEffect(() => {
+        fetchAllData();
+    }, [timeRange]);
+
+    const processClassData = async () => {
+        try {
+            const classes = await getClasses();
+            const study_sessions = await getStudySessions();
+    
+            const now = new Date();
+            const weekAgo = new Date(now - 7 * 24 * 60 * 60 * 1000);
+            const monthAgo = new Date(now - 30 * 24 * 60 * 60 * 1000);
+    
+            const processedClasses = classes.map(classItem => {
+                const classStudySessions = study_sessions.filter(
+                    session => session.class_id === classItem.id
+                );
+    
+                const stats = {
+                    weekly: classStudySessions
+                        .filter(session => new Date(session.start_time) >= weekAgo)
+                        .reduce((total, session) => total + session.duration_minutes, 0),
+                    
+                    monthly: classStudySessions
+                        .filter(session => new Date(session.start_time) >= monthAgo)
+                        .reduce((total, session) => total + session.duration_minutes, 0),
+                    
+                    allTime: classStudySessions
+                        .reduce((total, session) => total + session.duration_minutes, 0)
+                };
+    
+                // Format the data to match the structure needed for the pie chart
+                return {
+                    name: classItem.name,
+                    value: timeRange === 'week' ? stats.weekly : 
+                           timeRange === 'month' ? stats.monthly : 
+                           stats.allTime,
+                    statistics: stats,
+                    totalSessions: classStudySessions.length,
+                    lastStudied: classStudySessions.length > 0 
+                        ? new Date(Math.max(...classStudySessions.map(s => new Date(s.start_time))))
+                        : null
+                };
+            });
+    
+            // Filter out classes with 0 value and sort by study time
+            const filteredClasses = processedClasses
+                .filter(cls => cls.value > 0)
+                .sort((a, b) => b.value - a.value);
+    
+            return filteredClasses;
+    
+        } catch (error) {
+            console.error("Error processing class data:", error);
+            throw error;
+        }
+    };
+
+    // Update data when timeRange changes
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setIsLoading(true);
+                setError(null);
+                const data = await processClassData();
+                setClassDataState(data);
+            } catch (err) {
+                setError(err.message);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [timeRange]); // Add timeRange as dependency
 
     const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
@@ -77,8 +166,8 @@ const StatsTab = () => {
                         <FontAwesomeIcon icon={faBook} />
                     </div>
                     <div className="stats-card-content">
-                        <h3>Total Cards Studied</h3>
-                        <p>{stats.totalStudied}</p>
+                        <h3>Total Duration Studied</h3>
+                        <p>{stats.totalStudied} mins</p>
                     </div>
                 </div>
 
@@ -136,13 +225,13 @@ const StatsTab = () => {
                     <ResponsiveContainer width="100%" height={300}>
                         <PieChart>
                             <Pie
-                                data={subjectData}
+                                data={classData}
                                 innerRadius={60}
                                 outerRadius={80}
                                 paddingAngle={5}
                                 dataKey="value"
                             >
-                                {subjectData.map((entry, index) => (
+                                {classData.map((entry, index) => (
                                     <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                                 ))}
                             </Pie>

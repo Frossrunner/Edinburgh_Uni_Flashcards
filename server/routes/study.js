@@ -102,15 +102,6 @@ router.post("/study/:cardId/response", authenticateToken, async (req, res) => {
             currentReviewCount
         );
 
-        // Log values for debugging
-        console.log('Current Values:', {
-            interval: currentInterval,
-            difficultyFactor: currentDifficultyFactor,
-            reviewCount: currentReviewCount
-        });
-        
-        console.log('New Values:', newValues);
-
         // Update card with new spacing values
         await db.execute(`
             UPDATE flashcards
@@ -216,6 +207,53 @@ router.get("/study/:deckId/stats", authenticateToken, async (req, res) => {
     } catch (error) {
         console.error("Error fetching deck statistics:", error);
         res.status(500).json({ error: "An error occurred while fetching deck statistics" });
+    }
+});
+
+router.post("/study/session/start", authenticateToken, async (req, res) => {
+    try {
+        const userId = req.user.id;
+        const { class_id, deck_id } = req.body;
+        
+        const [result] = await db.execute(`
+            INSERT INTO study_sessions 
+            (user_id, class_id, deck_id, start_time) 
+            VALUES (?, ?, ?, NOW())
+        `, [userId, class_id, deck_id]);
+
+        res.status(200).json({ session_id: result.insertId });
+    } catch (error) {
+        console.error("Error starting study session:", error);
+        res.status(500).json({ error: "Error starting study session" });
+    }
+});
+
+// End a study session
+router.post("/study/session/end", authenticateToken, async (req, res) => {
+    try {
+        const { 
+            session_id, 
+            duration_minutes, 
+            cards_studied, 
+            correct_cards,
+            completed 
+        } = req.body;
+        
+        await db.execute(`
+            UPDATE study_sessions 
+            SET 
+                end_time = NOW(),
+                duration_minutes = ?,
+                cards_studied = ?,
+                correct = ?,
+                completed = ?
+            WHERE id = ?
+        `, [duration_minutes, cards_studied, correct_cards, completed, session_id]);
+
+        res.status(200).json({ message: "Session ended successfully" });
+    } catch (error) {
+        console.error("Error ending study session:", error);
+        res.status(500).json({ error: "Error ending study session" });
     }
 });
 

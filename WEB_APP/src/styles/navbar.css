@@ -51,7 +51,7 @@
     color: white;
 }
 
-.notification-icon {
+.notifications-icon {
     position: relative;
 }
 
@@ -71,9 +71,6 @@
     border: 2px solid rgba(17, 0, 130, 0.9);
 }
 
-CSS
-
-Collapse
 .profile-link {
     text-decoration: none;
     padding: 0;
