@@ -5,6 +5,7 @@ import StudyCard from '../components/study_card.jsx';
 import StudyProgress from '../components/study_progress.jsx';
 import StudyComplete from '../components/study_complete.jsx';
 import NextReviewInfo from '../components/next_review_info.jsx';
+import { insert } from '../utils/dateUtils.js';
 // styles
 import '../styles/study.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -31,10 +32,8 @@ const StudyDeck = () => {
     useEffect(() => {
         const initializeStudy = async () => {
             await fetchCards();
-            await fetchNextReview();
             await startStudySession();
         };
-
         initializeStudy();
         return () => {
             if (sessionId) {
@@ -99,38 +98,51 @@ const StudyDeck = () => {
         navigate(`/class`, { state: classData });
     };
 
-    const handleResponse = async (cardId, difficulty) => {
+    const handleBack = async () => {
+        await endStudySession(false);
+        navigate(`/class`, { state: classData });
+    }
+
+    const handleResponse = async (card, difficulty) => {
         try {
-            const token = localStorage.getItem('authToken');
-            await fetch(`/api/study/${cardId}/response`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify({ 
-                    difficulty,
-                    session_id: sessionId 
-                }),
-            });
+            // Create a copy of the cards array without the current card
+            let new_cards = cards.filter(c => c.id !== card.id); // Remove the current card
 
+            // Handle card based on difficulty
+            switch (difficulty) {
+                case 1: // Move back 1 position
+                    new_cards = insert(new_cards, card, 1);
+                    break;
+                case 2: // Move back 3 positions
+                    new_cards = insert(new_cards, card, 3);
+                    break;
+                case 3: // Move back 10 positions
+                    new_cards = insert(new_cards, card, 10);
+                    break;
+                case 4: // nothing
+                    // new_cards remains unchanged (card is already removed)
+                    break;
+                case 5: // remove card from deck
+                    break;
+                default:
+                    throw new Error(`Invalid difficulty: ${difficulty}`);
+            }
+    
+            setCards(new_cards);
             // Update stats
-            const isCorrect = difficulty >= 4;
-            setStudyStats((prev) => ({
-                correct: isCorrect ? prev.correct + 1 : prev.correct,
-                incorrect: !isCorrect ? prev.incorrect + 1 : prev.incorrect,
-                remaining: prev.remaining - 1,
+            setStudyStats(prev => ({
+                ...prev, // Preserve other stats
+                correct: difficulty >= 3 ? prev.correct + 1 : prev.correct,
+                incorrect: difficulty < 3 ? prev.incorrect + 1 : prev.incorrect,
+                remaining: difficulty === 5 ? prev.remaining - 1 : prev.remaining,
             }));
-
+    
             // Move to next card or end session
-            if (currentCardIndex + 1 < cards.length) {
-                setCurrentCardIndex((prev) => prev + 1);
-            } else {
-                await endStudySession(true); // true indicates normal completion
+            if (new_cards.length <= 0) {
                 setSessionComplete(true);
             }
         } catch (error) {
-            console.error('Error updating card:', error);
+            console.error('Error in handleResponse:', error);
         }
     };
 
@@ -148,21 +160,6 @@ const StudyDeck = () => {
             setIsLoading(false);
         } catch (error) {
             console.error('Error fetching cards:', error);
-        }
-    };
-
-    const fetchNextReview = async () => {
-        try {
-            const token = localStorage.getItem('authToken');
-            const response = await fetch(`/api/study/${deckId}/next-review`, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                },
-            });
-            const data = await response.json();
-            setNextReviewInfo(data);
-        } catch (error) {
-            console.error('Error fetching next review:', error);
         }
     };
 
@@ -189,7 +186,7 @@ const StudyDeck = () => {
             <div className="study-header">
                 <button
                     className="study-back-button"
-                    onClick={() => navigate(`/class`, { state: classData })}
+                    onClick={() => handleBack()}
                 >
                     <FontAwesomeIcon icon={faArrowLeft} /> Back to Deck
                 </button>

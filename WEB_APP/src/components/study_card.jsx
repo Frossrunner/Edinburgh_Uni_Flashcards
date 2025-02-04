@@ -17,7 +17,7 @@ const StudyCard = ({ card, onResponse }) => {
 
     const handleDifficulty = (difficulty) => {
         setIsAnswered(true);
-        onResponse(card.id, difficulty);
+        onResponse(card, difficulty);
         // Reset for next card
         setTimeout(() => {
             setIsFlipped(false);
